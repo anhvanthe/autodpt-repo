@@ -1,0 +1,402 @@
+# AutoDPT result-template mapping (SRS §8.3). Header/units text is copied from the template at runtime;
+# 'header' here is only used to verify that the template has not changed.
+template_file: FS820_6IN1_Wphase_HS_400V_50-950A_Ron3_Roff6.6_125oC.xlsx
+header_row: 1
+units_row: 2
+first_data_row: 3
+empty_value: NaN
+normalisation_block:
+  enabled: true
+  start_offset_rows: 4
+  energy_deskew: none
+columns:
+- col: A
+  header: Measurement Point
+  unit_in_template: null
+  key: point_index
+  scale: 1
+  decimals: 0
+- col: B
+  header: Date Time
+  unit_in_template: null
+  key: timestamp
+- col: C
+  header: Temperature
+  unit_in_template: Â°C
+  key: temperature_c
+  scale: 1
+  decimals: 1
+- col: D
+  header: High-side measurement?
+  unit_in_template: (bool)
+  key: is_high_side
+- col: E
+  header: Set voltage
+  unit_in_template: V
+  key: vdc_set
+  scale: 1
+  decimals: 2
+- col: F
+  header: Measured voltage offset
+  unit_in_template: V
+  key: vdc_offset
+  scale: 1
+  decimals: 2
+- col: G
+  header: Set current
+  unit_in_template: A
+  key: itest_set
+  scale: 1
+  decimals: 2
+- col: H
+  header: Resistance on
+  unit_in_template: Ohm
+  key: rg_on
+  scale: 1
+  decimals: 2
+- col: I
+  header: Resistance off
+  unit_in_template: Ohm
+  key: rg_off
+  scale: 1
+  decimals: 2
+- col: J
+  header: Gate voltage on
+  unit_in_template: V
+  key: vge_on_set
+  scale: 1
+  decimals: 2
+- col: K
+  header: Gate voltage off
+  unit_in_template: V
+  key: vge_off_set
+  scale: 1
+  decimals: 2
+- col: L
+  header: Load inductance
+  unit_in_template: uH
+  key: load_inductance
+  deskew: n.a.
+  scale: 1000000.0
+  decimals: 2
+- col: M
+  header: Turn-on energy
+  unit_in_template: uJ
+  key: e_on
+  deskew: none
+  scale: 1000000.0
+  decimals: 2
+- col: N
+  header: Turn-off energy
+  unit_in_template: uJ
+  key: e_off
+  deskew: none
+  scale: 1000000.0
+  decimals: 2
+- col: O
+  header: Turn-on delay
+  unit_in_template: ns
+  key: td_on
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: P
+  header: Rise time
+  unit_in_template: ns
+  key: t_r
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: Q
+  header: Turn-off delay
+  unit_in_template: ns
+  key: td_off
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: R
+  header: Fall time
+  unit_in_template: ns
+  key: t_f
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: S
+  header: Reverse recovery time
+  unit_in_template: ns
+  key: t_rr
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: T
+  header: Reverse recovery charge
+  unit_in_template: pQ
+  key: q_rr
+  deskew: none
+  scale: 1000000000000.0
+  decimals: 2
+- col: U
+  header: Maximum reverse current
+  unit_in_template: A
+  key: i_rrm
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: V
+  header: Reverse recovery softness factor
+  unit_in_template: unitless
+  key: softness
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: W
+  header: Reverse recovery energy
+  unit_in_template: uJ
+  key: e_rec
+  deskew: none
+  scale: 1000000.0
+  decimals: 2
+- col: X
+  header: Dv/Dt Turn-on
+  unit_in_template: V/ns
+  key: dvdt_on
+  deskew: none
+  scale: 1.0e-09
+  decimals: 2
+- col: Y
+  header: Di/Dt Turn-on
+  unit_in_template: A/ns
+  key: didt_on
+  deskew: none
+  scale: 1.0e-09
+  decimals: 2
+- col: Z
+  header: Dv/Dt Turn-off
+  unit_in_template: V/ns
+  key: dvdt_off
+  deskew: none
+  scale: 1.0e-09
+  decimals: 2
+- col: AA
+  header: Di/Dt Turn-off
+  unit_in_template: A/ns
+  key: didt_off
+  deskew: none
+  scale: 1.0e-09
+  decimals: 2
+- col: AB
+  header: Duration first pulse
+  unit_in_template: us
+  key: t1_played
+  scale: 1000000.0
+  decimals: 2
+- col: AC
+  header: Pulse break
+  unit_in_template: us
+  key: t2_played
+  scale: 1000000.0
+  decimals: 2
+- col: AD
+  header: Duration second pulse
+  unit_in_template: us
+  key: t3_played
+  scale: 1000000.0
+  decimals: 2
+- col: AE
+  header: Measured current (on)
+  unit_in_template: A
+  key: i_on
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AF
+  header: Measured current (off)
+  unit_in_template: A
+  key: i_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AG
+  header: Measured voltage (on)
+  unit_in_template: V
+  key: vdc_on
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AH
+  header: Measured voltage (off)
+  unit_in_template: V
+  key: vdc_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AI
+  header: Voltage overshoot
+  unit_in_template: V
+  key: vce_peak_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AJ
+  header: Complementary Maximum Current (off)
+  unit_in_template: A
+  key: comp_i_max_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AK
+  header: Complementary Maximum Voltage (on)
+  unit_in_template: V
+  key: comp_vce_max_on
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AL
+  header: Complementary Maximum Gate Voltage (on)
+  unit_in_template: V
+  key: comp_vge_max_on
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AM
+  header: Complementary Maximum Gate Voltage (off)
+  unit_in_template: V
+  key: comp_vge_max_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AN
+  header: Complementary Minimum Gate Voltage (on)
+  unit_in_template: V
+  key: comp_vge_min_on
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AO
+  header: Complementary Minimum Gate Voltage (off)
+  unit_in_template: V
+  key: comp_vge_min_off
+  deskew: none
+  scale: 1
+  decimals: 2
+- col: AP
+  header: Total Stray Inductance
+  unit_in_template: nH
+  key: l_sigma_on
+  deskew: none
+  scale: 1000000000.0
+  decimals: 2
+- col: AQ
+  header: Single skew
+  unit_in_template: ns
+  key: skew_single
+  scale: 1000000000.0
+  decimals: 2
+- col: AR
+  header: Turn-on energy (single de-skew)
+  unit_in_template: uJ
+  key: e_on
+  deskew: single
+  scale: 1000000.0
+  decimals: 2
+- col: AS
+  header: Turn-off energy (single de-skew)
+  unit_in_template: uJ
+  key: e_off
+  deskew: single
+  scale: 1000000.0
+  decimals: 2
+- col: AT
+  header: Turn-on delay (single de-skew)
+  unit_in_template: ns
+  key: td_on
+  deskew: single
+  scale: 1000000000.0
+  decimals: 2
+- col: AU
+  header: Rise time (single de-skew)
+  unit_in_template: ns
+  key: t_r
+  deskew: single
+  scale: 1000000000.0
+  decimals: 2
+- col: AV
+  header: Turn-off delay (single de-skew)
+  unit_in_template: ns
+  key: td_off
+  deskew: single
+  scale: 1000000000.0
+  decimals: 2
+- col: AW
+  header: Fall time (single de-skew)
+  unit_in_template: ns
+  key: t_f
+  deskew: single
+  scale: 1000000000.0
+  decimals: 2
+- col: AX
+  header: Reverse recovery energy (single de-skew)
+  unit_in_template: uJ
+  key: e_rec
+  deskew: single
+  scale: 1000000.0
+  decimals: 2
+- col: AY
+  header: Statistic skew
+  unit_in_template: ns
+  key: skew_statistic
+  scale: 1000000000.0
+  decimals: 2
+- col: AZ
+  header: Turn-on energy (statistic de-skew)
+  unit_in_template: uJ
+  key: e_on
+  deskew: statistic
+  scale: 1000000.0
+  decimals: 2
+- col: BA
+  header: Turn-off energy (statistic de-skew)
+  unit_in_template: uJ
+  key: e_off
+  deskew: statistic
+  scale: 1000000.0
+  decimals: 2
+- col: BB
+  header: Turn-on delay (statistic de-skew)
+  unit_in_template: ns
+  key: td_on
+  deskew: statistic
+  scale: 1000000000.0
+  decimals: 2
+- col: BC
+  header: Rise time (statistic de-skew)
+  unit_in_template: ns
+  key: t_r
+  deskew: statistic
+  scale: 1000000000.0
+  decimals: 2
+- col: BD
+  header: Turn-off delay (statistic de-skew)
+  unit_in_template: ns
+  key: td_off
+  deskew: statistic
+  scale: 1000000000.0
+  decimals: 2
+- col: BE
+  header: Fall time (statistic de-skew)
+  unit_in_template: ns
+  key: t_f
+  deskew: statistic
+  scale: 1000000000.0
+  decimals: 2
+- col: BF
+  header: Reverse recovery energy (statistic de-skew)
+  unit_in_template: uJ
+  key: e_rec
+  deskew: statistic
+  scale: 1000000.0
+  decimals: 2
+- col: BG
+  header: sweep bool
+  unit_in_template: null
+  key: is_sweep

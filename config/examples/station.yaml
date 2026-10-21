@@ -1,0 +1,7 @@
+# Instruments (used from Phase 2). Addresses are examples - use DHCP reservations / static IPs.
+name: DPT-bench-1
+instruments:
+  scope: {model: WaveRunner 8108HD, resource: "TCPIP0::192.168.0.10::inst0::INSTR", transport: vxi11, timeout_ms: 10000}
+  afg:   {model: AFG31022, resource: "TCPIP0::192.168.0.11::inst0::INSTR", transport: vxi11}
+  psu:   {model: SL1000-1.5/UI+LXI, resource: "TCPIP0::192.168.0.12::50505::SOCKET", transport: socket}
+  dcmon: {model: LAN DMM (Appendix F), resource: "TCPIP0::192.168.0.13::inst0::INSTR", transport: vxi11}

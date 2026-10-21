@@ -1,0 +1,16 @@
+# Definitions of the original draft requirements (section 3.3) - for comparison with data
+# produced by the earlier tool. Gate percentages are fractions of the V_GE swing.
+name: LEGACY
+version: "1.0"
+standard: Draft requirements section 3.3 (IEC-style, current/voltage-based windows)
+device_type: any
+verified: true
+gate_reference: swing
+source_note: Draft requirements.md section 3.3 table.
+params:
+  td_on:  {event: "on",  kind: time,   start: {signal: vge, level: 0.10, direction: rising},  end: {signal: ic,  level: 0.10, direction: rising}}
+  t_r:    {event: "on",  kind: time,   start: {signal: ic,  level: 0.10, direction: rising},  end: {signal: ic,  level: 0.90, direction: rising}}
+  e_on:   {event: "on",  kind: energy, start: {signal: ic,  level: 0.10, direction: rising},  end: {signal: vce, level: 0.02, direction: falling}}
+  td_off: {event: "off", kind: time,   start: {signal: vge, level: 0.90, direction: falling}, end: {signal: ic,  level: 0.90, direction: falling}}
+  t_f:    {event: "off", kind: time,   start: {signal: ic,  level: 0.90, direction: falling}, end: {signal: ic,  level: 0.10, direction: falling}}
+  e_off:  {event: "off", kind: energy, start: {signal: vce, level: 0.10, direction: rising},  end: {signal: ic,  level: 0.02, direction: falling}}

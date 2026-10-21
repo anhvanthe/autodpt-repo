@@ -1,0 +1,19 @@
+# IGBT switching definitions per IEC 60747-9 (SRS ANA-15).
+# verified: false until checked against the standard text (open point O8).
+name: IEC60747-9
+version: "1.0"
+standard: IEC 60747-9 (cl. 6.3.11 turn-on, 6.3.12 turn-off)
+device_type: IGBT
+verified: false
+gate_reference: zero
+source_note: >-
+  Taken from Keysight PD1500A documentation, which cites IEC 60747-9 cl. 6.3.11/6.3.12.
+  Gate percentages referenced to 0 V (x * V_GE,on). Current % of switching current, voltage % of V_DC.
+params:
+  td_on:  {event: "on",  kind: time,   start: {signal: vge, level: 0.10, direction: rising},  end: {signal: ic,  level: 0.10, direction: rising}}
+  t_r:    {event: "on",  kind: time,   start: {signal: ic,  level: 0.10, direction: rising},  end: {signal: ic,  level: 0.90, direction: rising}}
+  e_on:   {event: "on",  kind: energy, start: {signal: vge, level: 0.10, direction: rising},  end: {signal: vce, level: 0.02, direction: falling}}
+  td_off: {event: "off", kind: time,   start: {signal: vge, level: 0.90, direction: falling}, end: {signal: ic,  level: 0.90, direction: falling}}
+  t_f:    {event: "off", kind: time,   start: {signal: ic,  level: 0.90, direction: falling}, end: {signal: ic,  level: 0.10, direction: falling}}
+  t_z:    {event: "off", kind: time,   start: {signal: ic,  level: 0.10, direction: falling}, end: {signal: ic,  level: 0.02, direction: falling}}
+  e_off:  {event: "off", kind: energy, start: {signal: vge, level: 0.90, direction: falling}, end: {signal: ic,  level: 0.02, direction: falling}}

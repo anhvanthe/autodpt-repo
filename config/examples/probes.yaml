@@ -1,0 +1,9 @@
+# Probe library (CFG-01). Values are EXAMPLES - replace with your probes' data sheets/cal records.
+probes:
+  - {name: HVD-1, type: hv_differential, scale: 100, scale_unit: V/V, bandwidth_hz: 200.0e6, max_voltage_v: 1500, serial: "example", cal_due: 2027-06-30}
+  - {name: HVD-2, type: hv_differential, scale: 100, scale_unit: V/V, bandwidth_hz: 200.0e6, max_voltage_v: 1500, serial: "example", cal_due: 2027-06-30}
+  - {name: PASSIVE-10x, type: passive, scale: 10, scale_unit: V/V, bandwidth_hz: 500.0e6, max_voltage_v: 300}
+  - {name: ISO-GATE, type: optically_isolated, scale: 10, scale_unit: V/V, bandwidth_hz: 1.0e9, max_voltage_v: 60}
+  - {name: ISO-GATE-2, type: optically_isolated, scale: 10, scale_unit: V/V, bandwidth_hz: 1.0e9, max_voltage_v: 60}
+  - {name: ROGOWSKI-6kA, type: rogowski, scale: 0.0005, scale_unit: V/A, bandwidth_hz: 30.0e6, max_current_a: 6000, rogowski_tau_s: 0.05}
+  - {name: SHUNT-2mOhm, type: coaxial_shunt, scale: 0.002, scale_unit: Ohm, bandwidth_hz: 400.0e6, max_current_a: 1500, shunt_pulse_energy_j: 4.0}

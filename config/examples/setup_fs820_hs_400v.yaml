@@ -1,0 +1,45 @@
+# Example run setup (GUI-06): FS820 W-phase high side, 400 V, current sweep - mirrors the result template.
+name: FS820_6IN1_Wphase_HS_400V
+operator: Everest
+matrix:
+  vdc_list: [400]
+  itest_list: [50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950]
+  rg_list: [{rg_on_ohm: 3.0, rg_off_ohm: 6.6}]
+  vg_list: [{v_on: 15.5, v_off: -6.5}]
+  temp_list_c: [125]
+  repetitions: 3
+  t_pre_s: 5.0e-6
+  t2_s: 4.0e-6
+  t3_s: 4.0e-6
+channel_map:
+  assignments:
+    - {signal: VGE_DUT,  scope_channel: 1, probe: ISO-GATE}
+    - {signal: VCE_DUT,  scope_channel: 2, probe: HVD-1}
+    - {signal: IC_DUT,   scope_channel: 3, probe: ROGOWSKI-6kA, deskew_s: 6.4e-9}
+    - {signal: VGE_COMP, scope_channel: 4, probe: ISO-GATE-2}
+    - {signal: VCE_COMP, scope_channel: 5, probe: HVD-2, dclink_monitor: false}
+analysis:
+  preset: null            # auto: IGBT -> IEC60747-9
+fixture:
+  name: DPT-fixture-A
+  c_dclink_f: 1.0e-3
+  r_bleed_ohm: 44.0e3
+  bleed_strings: 2
+  r_discharge_ohm: 470
+  discharge_relay: true
+  l_load_h: 54.0e-6
+  max_v: 1000
+  max_i: 1500
+dut:
+  part_number: FS820R08A6P2B
+  dut_type: IGBT
+  technology: Si
+  v_rated_v: 750
+  i_nom_a: 820
+  config_label: 6IN1
+  phase: W
+  side: HS
+  comp_vth_min_v: 5.0
+  comp_vge_min_rating_v: -20.0
+gate_drive: {v_on: 15.5, v_off: -6.5, rg_on_ohm: 3.0, rg_off_ohm: 6.6}
+limits: {max_vdc: 600, max_ipeak: 1200}

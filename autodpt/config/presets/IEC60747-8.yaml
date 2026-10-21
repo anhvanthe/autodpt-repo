@@ -1,0 +1,20 @@
+# MOSFET (Si/SiC) switching definitions per IEC 60747-8 (SRS ANA-15).
+# verified: false until checked against the standard text (open point O8).
+# Note: times are V_DS-based. With L_sigma*di/dt > 10 % of V_DC (fast SiC) the 90 % V_DS
+# crossing at turn-on falls on the inductive dip, not on the voltage collapse.
+name: IEC60747-8
+version: "1.0"
+standard: IEC 60747-8 (cl. 4.3.5 switching times, 3.3.20/3.3.21 energies)
+device_type: MOSFET
+verified: false
+gate_reference: zero
+source_note: >-
+  Taken from Keysight PD1500A documentation citing IEC 60747-8. E_off window inferred by symmetry
+  (the secondary source repeats the E_on text) - verify.
+params:
+  td_on:  {event: "on",  kind: time,   start: {signal: vge, level: 0.10, direction: rising},  end: {signal: vce, level: 0.90, direction: falling}}
+  t_r:    {event: "on",  kind: time,   start: {signal: vce, level: 0.90, direction: falling}, end: {signal: vce, level: 0.10, direction: falling}}
+  e_on:   {event: "on",  kind: energy, start: {signal: ic,  level: 0.10, direction: rising},  end: {signal: vce, level: 0.10, direction: falling}}
+  td_off: {event: "off", kind: time,   start: {signal: vge, level: 0.90, direction: falling}, end: {signal: vce, level: 0.10, direction: rising}}
+  t_f:    {event: "off", kind: time,   start: {signal: vce, level: 0.10, direction: rising},  end: {signal: vce, level: 0.90, direction: rising}}
+  e_off:  {event: "off", kind: energy, start: {signal: vce, level: 0.10, direction: rising},  end: {signal: ic,  level: 0.10, direction: falling}}
