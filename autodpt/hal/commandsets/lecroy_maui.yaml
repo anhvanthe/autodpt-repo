@@ -1,0 +1,29 @@
+# Teledyne LeCroy MAUI oscilloscopes (WaveRunner 8108HD). Legacy IEEE-488.2 remote command set.
+# Headers confirmed in the LeCroy X-Stream/WaveSurfer remote control manual (CHDR, WAVEFORM?, INSPECT?,
+# TRIG_MODE, WAIT, INR?, TDIV, VDIV, *OPC?, CMR?, EXR?). WAVEDESC field offsets follow the LeCroy
+# template; bench-check cross-checks the parsed binary descriptor against INSPECT? text read-back.
+name: lecroy_maui
+role: scope
+idn_match: {vendor: "LECROY", model: ["WR8", "WAVERUNNER"]}
+min_firmware: null
+error_style: lecroy           # CMR? (command error) and EXR? (execution error), 0 = none
+commands:
+  idn:          {cmd: "*IDN?",                     verified: true}
+  chdr_off:     {cmd: "CHDR OFF",                  verified: true}
+  cfmt:         {cmd: "CFMT DEF9,WORD,BIN",        verified: false, note: "COMM_FORMAT block/word/binary"}
+  cord:         {cmd: "CORD LO",                   verified: false, note: "COMM_ORDER little-endian"}
+  cmr_q:        {cmd: "CMR?",                      verified: true}
+  exr_q:        {cmd: "EXR?",                      verified: true}
+  opc_q:        {cmd: "*OPC?",                     verified: true}
+  tdiv_q:       {cmd: "TDIV?",                     verified: true}
+  tdiv_set:     {cmd: "TDIV {value}",              verified: true}
+  vdiv_q:       {cmd: "C{ch}:VDIV?",               verified: true}
+  trmd_q:       {cmd: "TRMD?",                     verified: true}
+  trmd_set:     {cmd: "TRMD {value}",              verified: true}
+  arm:          {cmd: "ARM",                       verified: false}
+  force_trig:   {cmd: "FRTR",                      verified: false}
+  wait:         {cmd: "WAIT {value}",              verified: true}
+  inr_q:        {cmd: "INR?",                      verified: true}
+  wf_all:       {cmd: "C{ch}:WF? ALL",             verified: true}
+  inspect:      {cmd: "C{ch}:INSPECT? \"{value}\"", verified: true}
+forbidden: []

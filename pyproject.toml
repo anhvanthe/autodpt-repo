@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "autodpt"
-version = "0.1.0"
+version = "0.2.0"
 description = "Automated double pulse test (DPT) application: instrument control, switching analysis, reporting"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -40,7 +40,7 @@ markers = [
 addopts = "-ra"
 
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py311"
 
 [tool.ruff.lint]

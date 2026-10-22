@@ -2,6 +2,7 @@
 
 | Requirement | Implemented in | Verified by |
 |---|---|---|
+| AFG-03 | autodpt/benchcheck.py | - |
 | ANA-02 | autodpt/analysis/analyse.py | tests/golden/test_deskew.py::test_single_deskew_restores_energies |
 | ANA-03 | autodpt/analysis/preprocess.py<br>autodpt/config/models.py | tests/golden/test_validation.py::test_filter_is_recorded_and_mild<br>tests/unit/test_edges_preprocess.py::test_filters_preserve_dc_and_length |
 | ANA-05 | autodpt/analysis/preprocess.py | tests/unit/test_edges_preprocess.py::test_rogowski_droop_compensation_recovers_step |
@@ -29,7 +30,9 @@
 | ANA-41 | autodpt/analysis/synth.py | tests/golden/test_golden.py::test_ideal_acquisition |
 | ANA-42 | - | tests/golden/test_deskew.py::test_statistic_skew_ideal<br>tests/golden/test_deskew.py::test_statistic_skew_noisy<br>tests/golden/test_golden.py::test_ideal_acquisition<br>tests/golden/test_golden.py::test_realistic_acquisition |
 | ARC-01 | autodpt/analysis/__init__.py | - |
+| ARC-03 | autodpt/hal/transport.py | - |
 | ARC-05 | autodpt/app.py<br>autodpt/config/loader.py<br>autodpt/config/models.py | tests/unit/test_cli.py::test_check_config<br>tests/unit/test_config.py::test_examples_load_and_roundtrip<br>tests/unit/test_config.py::test_channel_map_rejects_missing_and_duplicates<br>tests/unit/test_config.py::test_analysis_config_rejects_bad_pairs |
+| ARC-06 | autodpt/hal/commands.py | - |
 | CFG-01 | autodpt/config/models.py | tests/unit/test_config.py::test_probe_consistency_and_calibration |
 | CFG-02 | autodpt/analysis/types.py<br>autodpt/config/models.py | tests/golden/test_golden.py::test_high_side_polarity_inversion<br>tests/unit/test_config.py::test_channel_map_rejects_missing_and_duplicates<br>tests/unit/test_edges_preprocess.py::test_raw_scaling_polarity_and_clipping |
 | CFG-03 | autodpt/config/models.py | tests/unit/test_config.py::test_fixture_derived_values_match_appendix_e |
@@ -37,13 +40,26 @@
 | CFG-05 | - | tests/unit/test_config.py::test_gate_drive_levels |
 | CFG-06 | autodpt/config/models.py | - |
 | CFG-07 | autodpt/config/loader.py | tests/unit/test_config.py::test_examples_load_and_roundtrip |
-| DATA-04 | autodpt/data/eventlog.py | tests/unit/test_config.py::test_event_log_iso_ms_and_memory |
+| DATA-04 | autodpt/data/eventlog.py<br>autodpt/hal/transport.py | tests/unit/test_config.py::test_event_log_iso_ms_and_memory |
 | DATA-05 | autodpt/config/models.py | - |
 | GUI-06 | autodpt/config/loader.py<br>autodpt/config/models.py | tests/unit/test_config.py::test_examples_load_and_roundtrip |
-| NET-06 | - | tests/unit/test_cli.py::test_sim_mode_runs |
+| NET-01 | autodpt/hal/netcheck.py<br>autodpt/hal/transport.py | tests/integration/test_visa_socket.py::test_connect_level_over_real_visa_sockets<br>tests/unit/test_benchcheck.py::test_endpoint_parsing |
+| NET-02 | autodpt/benchcheck.py | tests/integration/test_visa_socket.py::test_connect_level_over_real_visa_sockets<br>tests/unit/test_benchcheck.py::test_simulated_bench_control_level_passes |
+| NET-03 | autodpt/hal/commands.py | tests/unit/test_benchcheck.py::test_simulated_bench_control_level_passes<br>tests/unit/test_benchcheck.py::test_wrong_instrument_at_address |
+| NET-04 | autodpt/benchcheck.py<br>autodpt/hal/transport.py | tests/integration/test_visa_socket.py::test_connect_level_over_real_visa_sockets<br>tests/unit/test_benchcheck.py::test_simulated_bench_control_level_passes<br>tests/unit/test_benchcheck.py::test_rejected_command_reports_instrument_error |
+| NET-06 | autodpt/hal/sim/instruments.py<br>autodpt/hal/transport.py | tests/unit/test_benchcheck.py::test_simulated_bench_control_level_passes<br>tests/unit/test_cli.py::test_sim_mode_runs |
+| NET-07 | autodpt/benchcheck.py<br>autodpt/hal/netcheck.py | - |
+| NET-08 | autodpt/hal/netcheck.py | tests/integration/test_visa_socket.py::test_connect_level_over_real_visa_sockets<br>tests/unit/test_benchcheck.py::test_endpoint_parsing<br>tests/unit/test_benchcheck.py::test_tcp_probe_open_and_closed |
+| NET-09 | autodpt/benchcheck.py | tests/integration/test_visa_socket.py::test_connect_level_over_real_visa_sockets<br>tests/unit/test_benchcheck.py::test_simulated_bench_control_level_passes<br>tests/unit/test_benchcheck.py::test_connect_level_is_read_only<br>tests/unit/test_benchcheck.py::test_cli_bench_check_sim |
 | NFR-LOG-01 | autodpt/data/eventlog.py | tests/unit/test_config.py::test_event_log_iso_ms_and_memory |
+| NFR-PERF-03 | autodpt/benchcheck.py | - |
+| SAF-01 | autodpt/benchcheck.py | tests/unit/test_benchcheck.py::test_outputs_forced_off_and_never_enabled<br>tests/unit/test_benchcheck.py::test_guard_blocks_forbidden_commands |
+| SAF-04 | autodpt/benchcheck.py | - |
+| SAF-08 | autodpt/benchcheck.py | tests/unit/test_benchcheck.py::test_outputs_forced_off_and_never_enabled<br>tests/unit/test_benchcheck.py::test_psu_output_on_is_stopped_and_reported |
+| SAF-12 | autodpt/benchcheck.py | - |
 | SCO-02 | autodpt/analysis/preprocess.py<br>autodpt/analysis/types.py | tests/golden/test_validation.py::test_clipping_makes_shot_invalid<br>tests/unit/test_edges_preprocess.py::test_raw_scaling_polarity_and_clipping |
-| SCO-05 | autodpt/analysis/types.py | - |
+| SCO-05 | autodpt/analysis/types.py<br>autodpt/hal/lecroy.py | tests/unit/test_benchcheck.py::test_wavedesc_roundtrip |
 | SEQ-01 | autodpt/config/models.py | - |
 | SEQ-03 | autodpt/analysis/synth.py | tests/golden/test_validation.py::test_current_out_of_tolerance |
+| SIM-01 | autodpt/hal/sim/instruments.py | - |
 | SIM-03 | autodpt/analysis/synth.py | - |

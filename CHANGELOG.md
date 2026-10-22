@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.0 — 2026-10-22 — Phase 2a: bench check
+
+### Added
+* `autodpt bench-check <station> [--level connect|control] [--acquire] [--sim]` (SRS NET-09) and
+  `autodpt discover`; guide in `docs/bench_check.md`.
+* Transport layer: `VisaTransport` (PyVISA, pyvisa-py default, NI-VISA for VICP), `MockTransport`,
+  transport-level guard against forbidden commands (output ON, AFG trigger).
+* Command sets as YAML with per-command `verified` flags: Magna-Power SL (all confirmed in the SL
+  SCPI manual incl. STAT:QUES bits and port 50505), Tek AFG31000 (headers confirmed; 5 argument
+  forms to confirm on the bench), LeCroy MAUI (4 to confirm), generic SCPI DMM.
+* LeCroy IEEE-488.2 block + WAVEDESC decoder with self-check against `INSPECT?`.
+* Instrument simulators (Magna SL, AFG31022, WaveRunner, DMM) with fault injection.
+* Tests: simulated bench, fault cases, read-only guarantee of the connect level, outputs never enabled,
+  real PyVISA over loopback TCP sockets. 77 tests.
+
 ## 0.1.0 — 2026-10-22 — Phase 0 + Phase 1
 
 ### Added

@@ -1,0 +1,27 @@
+# Magna-Power SL series (SL1000-1.5/UI+LXI). Source: Magna-Power SL user manual, ch. 10 "SCPI Command Set"
+# https://magna-power.com/assets/docs/html_sl/index-scpi.html  (checked 2026-10-22)
+name: magna_sl
+role: psu
+idn_match: {vendor: "MAGNA", model: "SL"}     # case-insensitive substrings of *IDN?
+min_firmware: null
+default_socket_port: 50505                     # SYSTem:COMMunicate:NETwork:PORT factory default
+error_style: scpi                              # SYST:ERR? -> 0,"NO ERROR"
+commands:
+  idn:          {cmd: "*IDN?",            verified: true}
+  error:        {cmd: "SYST:ERR?",        verified: true}
+  output_q:     {cmd: "OUTP?",            verified: true,  note: "1 = active, 0 = standby/faulted"}
+  output_stop:  {cmd: "OUTP:STOP",        verified: true}
+  volt_set:     {cmd: "VOLT {value}",     verified: true}
+  volt_q:       {cmd: "VOLT?",            verified: true}
+  curr_set:     {cmd: "CURR {value}",     verified: true}
+  curr_q:       {cmd: "CURR?",            verified: true}
+  ovt_q:        {cmd: "VOLT:PROT?",       verified: true}
+  oct_q:        {cmd: "CURR:PROT?",       verified: true}
+  meas_volt:    {cmd: "MEAS:VOLT?",       verified: true}
+  meas_curr:    {cmd: "MEAS:CURR?",       verified: true}
+  ques_cond:    {cmd: "STAT:QUES:COND?",  verified: true}
+  oper_cond:    {cmd: "STAT:OPER:COND?",  verified: true}
+# STAT:QUES:COND? bits (manual): 0 OV, 1 OC, 2 PB, 3 PGM, 4 OT, 5 FUSE, 7 ALM, 8 ILOC (interlock), 9 REM
+ques_bits: {0: OVT, 1: OCT, 2: PHASE_BALANCE, 3: PROGRAM_LINE, 4: OVER_TEMPERATURE, 5: FUSE, 7: ALARM, 8: INTERLOCK, 9: REMOTE_SENSE}
+# Never used by bench-check: OUTP:START (enables HV output)
+forbidden: ["OUTP:START", "OUTP:STAR", "OUTPUT:START", "OUTP 1", "OUTP ON"]

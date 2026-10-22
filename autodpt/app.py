@@ -5,6 +5,8 @@ Examples
     python -m autodpt --sim                       # synthetic IGBT shot → analysis vs truth table
     python -m autodpt --sim --device sic --skew 4.7 --noise
     python -m autodpt presets                     # list threshold presets
+    python -m autodpt bench-check config/examples/station.yaml                   # connection (read-only)
+    python -m autodpt bench-check config/examples/station.yaml --level control   # + controllability
     python -m autodpt check-config config/examples/setup_fs820_hs_400v.yaml \
         --probes config/examples/probes.yaml
 """
@@ -113,6 +115,65 @@ def _cmd_check_config(args: argparse.Namespace) -> int:
         return 2
 
 
+_CONTROL_NOTICE = """\
+CONTROL-LEVEL BENCH CHECK — what will happen:
+  * AFG CH1/CH2 outputs are switched OFF; load/levels/burst/ARB memory of the test channel are written.
+  * PSU output is switched OFF (if ON); voltage/current SETPOINTS are changed and restored. The output
+    is never enabled. Protection levels are only read.
+  * Scope: timebase changed and restored; one waveform transferred (with --acquire: single-shot
+    re-arm + force trigger, trigger mode restored).
+Before continuing confirm: HV fixture discharged / PSU not connected to a charged link, gate-driver
+input not connected to the AFG (or gate driver unpowered), personnel clear.
+"""
+
+
+def _cmd_bench_check(args: argparse.Namespace) -> int:
+    from pydantic import ValidationError
+
+    from autodpt.benchcheck import run_bench_check, sim_bench, write_reports
+    from autodpt.config import Station, load_model
+
+    try:
+        station = load_model(args.station, Station)
+    except (ValidationError, OSError) as exc:
+        print(f"INVALID station file: {exc}", file=sys.stderr)
+        return 2
+    if args.level == "control" and not args.sim and not args.yes:
+        print(_CONTROL_NOTICE)
+        if input("Type YES to continue: ").strip() != "YES":
+            print("aborted")
+            return 3
+    rep = run_bench_check(station, args.level, sim=sim_bench() if args.sim else None, acquire=args.acquire)
+    _, m = write_reports(rep, args.report_dir)
+    width = max(len(r.check) for r in rep.results) if rep.results else 20
+    print(f"\nBench check '{station.name}' — level {args.level} ({rep.mode})\n")
+    for r in rep.results:
+        print(f"  {r.status:4s}  {r.instrument:6s} {r.check:{width}s}  {r.detail}")
+    print(f"\nOVERALL: {rep.overall}    report: {m}")
+    return {"PASS": 0, "WARN": 0, "FAIL": 1}[rep.overall]
+
+
+def _cmd_discover(args: argparse.Namespace) -> int:
+    try:
+        import pyvisa
+    except ImportError:
+        print("pyvisa not installed: pip install -e .[hw]")
+        return 2
+    rm = pyvisa.ResourceManager(args.visa_library) if args.visa_library else pyvisa.ResourceManager()
+    print(f"VISA library: {rm.visalib}")
+    try:
+        found = rm.list_resources("?*")
+    except Exception as exc:  # backend-specific
+        print(f"discovery failed: {exc}")
+        return 1
+    for res in found:
+        print("  ", res)
+    if not found:
+        print("  nothing found (VXI-11 broadcast discovery may be blocked; LeCroy in VICP mode is not "
+              "discoverable — use the IPs from the instrument menus)")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     ap = argparse.ArgumentParser(prog="autodpt", description="Automated double pulse test")
     ap.add_argument("--version", action="version", version=f"autodpt {__version__}")
@@ -127,6 +188,16 @@ def build_parser() -> argparse.ArgumentParser:
     cc = sub.add_parser("check-config", help="validate a setup file (ARC-05)")
     cc.add_argument("setup", type=Path)
     cc.add_argument("--probes", type=Path, default=None)
+    bc = sub.add_parser("bench-check", help="check connection and controllability of the instruments")
+    bc.add_argument("station", type=Path)
+    bc.add_argument("--level", choices=("connect", "control"), default="connect",
+                    help="connect = read-only (default); control = safe write/read-back/restore tests")
+    bc.add_argument("--sim", action="store_true", help="run against simulated instruments")
+    bc.add_argument("--acquire", action="store_true", help="scope: single-shot arm + force trigger")
+    bc.add_argument("--yes", action="store_true", help="skip the safety confirmation (control level)")
+    bc.add_argument("--report-dir", type=Path, default=Path("reports"))
+    dc = sub.add_parser("discover", help="list VISA resources visible from this laptop")
+    dc.add_argument("--visa-library", default="@py")
     return ap
 
 
@@ -137,6 +208,10 @@ def main(argv: list[str] | None = None) -> int:
         return _cmd_presets(args)
     if args.cmd == "check-config":
         return _cmd_check_config(args)
+    if args.cmd == "bench-check":
+        return _cmd_bench_check(args)
+    if args.cmd == "discover":
+        return _cmd_discover(args)
     if args.sim:
         return _cmd_sim(args)
     print("Hardware mode is not available before Phase 2. Use --sim (see --help).")

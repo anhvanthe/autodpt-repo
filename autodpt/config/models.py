@@ -372,10 +372,14 @@ class InstrumentCfg(_Model):
     timeout_ms: int = Field(default=5000, gt=0)
     read_termination: str | None = "\n"
     write_termination: str | None = "\n"
+    command_set: str | None = Field(default=None, description="command-set name; None = by role")
+    test_channel: str = Field(default="1", description="scope trace (C1…) / AFG channel used by bench-check")
 
 
 class Station(_Model):
     name: str
+    visa_library: str = Field(default="@py", description="'@py' = pyvisa-py; '' = NI-VISA (needed for VICP)")
+    afg_load: Literal["INF", "50"] = Field(default="INF", description="gate-driver logic input: high-Z or 50 Ω")
     instruments: dict[Literal["scope", "afg", "psu", "dcmon", "dio", "temp"], InstrumentCfg]
 
     @model_validator(mode="after")

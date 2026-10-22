@@ -1,7 +1,28 @@
-# Instruments (used from Phase 2). Addresses are examples - use DHCP reservations / static IPs.
+# Instruments (SRS §2.1, NET-01). Addresses are examples - use static IPs / DHCP reservations.
+# Check with:  python -m autodpt bench-check config/examples/station.yaml [--level control]
 name: DPT-bench-1
+visa_library: "@py"        # pyvisa-py (VXI-11 + raw socket). Use "" for NI-VISA (required for VICP).
+afg_load: INF              # gate-driver logic input is high-Z (AFG-03)
 instruments:
-  scope: {model: WaveRunner 8108HD, resource: "TCPIP0::192.168.0.10::inst0::INSTR", transport: vxi11, timeout_ms: 10000}
-  afg:   {model: AFG31022, resource: "TCPIP0::192.168.0.11::inst0::INSTR", transport: vxi11}
-  psu:   {model: SL1000-1.5/UI+LXI, resource: "TCPIP0::192.168.0.12::50505::SOCKET", transport: socket}
-  dcmon: {model: LAN DMM (Appendix F), resource: "TCPIP0::192.168.0.13::inst0::INSTR", transport: vxi11}
+  scope:
+    model: WaveRunner 8108HD
+    resource: "TCPIP0::192.168.0.10::inst0::INSTR"   # MAUI: Utilities > Remote > LXI (VXI11)
+    # resource: "VICP::192.168.0.10"                  # alternative: TCPIP (VICP), needs NI-VISA + Passport
+    transport: vxi11
+    timeout_ms: 20000                                 # long enough for a full waveform transfer
+    read_termination: null                            # binary waveform reads must not strip bytes
+    write_termination: null
+    test_channel: "1"
+  afg:
+    model: AFG31022
+    resource: "TCPIP0::192.168.0.11::inst0::INSTR"
+    transport: vxi11
+    test_channel: "1"
+  psu:
+    model: SL1000-1.5/UI+LXI
+    resource: "TCPIP0::192.168.0.12::50505::SOCKET"   # Magna-Power factory default port 50505
+    transport: socket
+  dcmon:
+    model: LAN/USB DMM (Appendix F)
+    resource: "TCPIP0::192.168.0.13::inst0::INSTR"
+    transport: vxi11

@@ -3,7 +3,7 @@
 | Item | Value |
 |---|---|
 | Document | AutoDPT-SRS |
-| Version | 1.2 (v1.1 + findings from implementing Phase 0–1: ANA-11, ANA-12, ANA-14, ANA-18, ANA-22, ANA-42 refined — marked [P1]) |
+| Version | 1.3 (v1.2 + bench check for connection and controllability, NET-09, pulled forward from Phase 2) |
 | Date | 2026-10-22 |
 | Owner | Everest (HW, traction inverter) |
 | Status | Released for implementation (Phase 0–2); open points in §13 |
@@ -209,6 +209,11 @@ template/                    # FS820_6IN1_Wphase_HS_400V_50-950A_Ron3_Roff6.6_12
 - **NET-06** Simulation mode (`--sim` or GUI toggle) shall run the complete application with mock instruments (§6.13).
 - **NET-07 [NEW]** Commissioning documentation shall require: Archer C50 Wi-Fi disabled (or isolated SSID with no route), WAN port unconnected, laptop firewall allowing only the instrument subnet for the app. The connection screen shall warn if the laptop has a default route on the instrument interface.
 - **NET-08 [NEW]** A "Ping/Identify" button per instrument shall run `*IDN?` and a harmless read to verify the link without changing outputs.
+- **NET-09 [NEW, v1.3] Bench check.** A command `autodpt bench-check <station>` (and later a GUI page) shall verify connection and controllability and write a JSON + Markdown report:
+  - *connect level (read-only):* laptop interface/subnet, default-route isolation (NET-07), TCP reachability of each resource's port (111 VXI-11, socket port, 1861 VICP), VISA open, `*IDN?` against the command set (NET-03), error queue, median round-trip latency, output-state report. No setting commands are sent.
+  - *control level:* after operator confirmation, force AFG and PSU outputs OFF (SAF-08) and prove each instrument executes commands by write → read-back → restore on settings that are harmless with outputs off: AFG load impedance, logic levels, ARB function, burst ×1 and an ARB upload with point-count read-back; PSU voltage/current setpoints and status/interlock decoding; scope communication format, timebase, optional single-shot acquisition, full waveform transfer with throughput, and a self-check of the binary waveform-descriptor parser against the scope's `INSPECT?` text; DC-link monitor agreement with the PSU read-back.
+  - It shall never enable an output or trigger the AFG; forbidden commands are blocked at transport level. Outputs are verified OFF at the end.
+  - Command strings come from per-instrument command sets with a `verified` flag; the report lists unverified commands, and a passing control step confirms them on the actual firmware.
 
 ### 6.2 Configuration GUI (CFG) [NEW — from review feedback]
 
@@ -580,6 +585,7 @@ These come from the tool that produced the template, not from AutoDPT; they matt
 |---|---|---|
 | P0 ✔ | Repo skeleton, config models (pydantic), event log, CLI `--sim`, CI (ruff, mypy, pytest) | CI green — **done 2026-10-22** |
 | P1 ✔ | `analysis` package + `synth.py` + golden tests | VER-SW-01 passes — **done 2026-10-22** |
+| P2a ✔ | Transport layer (PyVISA / mock), command sets, instrument simulators, bench check (NET-09) | simulated + loopback-socket tests pass — **done 2026-10-22**; on-bench run by Everest pending |
 | P2 | HAL interfaces + mocks; real drivers for PSU, AFG, scope with CLI smoke scripts (`python -m autodpt.hal.<x> --ip … --identify`) | Mock tests pass; on bench: identify + safe read-only queries |
 | P3 | State machine, safety layer, pulse planner, sequencer (headless, CLI-driven) | VER-SW-02/03/04/07 pass |
 | P4 | Data layer: HDF5, template workbook + CSV (§8.3, DATA-10/11/12) | VER-SW-05/06 pass |

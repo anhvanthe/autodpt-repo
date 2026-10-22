@@ -1,0 +1,12 @@
+# Generic SCPI bench DMM used as DC-link monitor (SRS Appendix F). Model not fixed yet: the commands
+# are standard SCPI-1999 but must be confirmed for the chosen meter (bench-check reports the result).
+name: scpi_dmm
+role: dcmon
+idn_match: {vendor: "", model: ""}
+min_firmware: null
+error_style: scpi
+commands:
+  idn:        {cmd: "*IDN?",            verified: true}
+  error:      {cmd: "SYST:ERR?",        verified: false}
+  meas_vdc:   {cmd: "MEAS:VOLT:DC?",    verified: false}
+forbidden: []

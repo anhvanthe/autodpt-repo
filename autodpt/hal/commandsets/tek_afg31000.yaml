@@ -1,0 +1,33 @@
+# Tektronix AFG31000 series (AFG31022). Command headers confirmed in the AFG31000 programmer manual
+# command tables (OUTPut[1|2][:STATe], OUTPut[1|2]:IMPedance, [SOURce]:VOLTage:HIGH/LOW,
+# [SOURce]:FUNCtion, TRACe|DATA[:DATA], [SOURce]:BURSt:STATe/NCYCles/MODE, TRIGger:SOURce, *TRG,
+# SYSTem:ERRor?). Argument forms marked verified: false come from the AFG3000-family convention and
+# are confirmed by bench-check on the instrument (error queue + read-back).
+name: tek_afg31000
+role: afg
+idn_match: {vendor: "TEKTRONIX", model: "AFG31"}
+min_firmware: null
+error_style: scpi
+commands:
+  idn:           {cmd: "*IDN?",                          verified: true}
+  error:         {cmd: "SYST:ERR?",                      verified: true}
+  output_off:    {cmd: "OUTP{ch}:STAT OFF",              verified: true}
+  output_q:      {cmd: "OUTP{ch}:STAT?",                 verified: true}
+  imp_set:       {cmd: "OUTP{ch}:IMP {value}",           verified: false, note: "INF or 50"}
+  imp_q:         {cmd: "OUTP{ch}:IMP?",                  verified: true}
+  high_set:      {cmd: "SOUR{ch}:VOLT:LEV:IMM:HIGH {value}", verified: true}
+  high_q:        {cmd: "SOUR{ch}:VOLT:LEV:IMM:HIGH?",    verified: true}
+  low_set:       {cmd: "SOUR{ch}:VOLT:LEV:IMM:LOW {value}",  verified: true}
+  low_q:         {cmd: "SOUR{ch}:VOLT:LEV:IMM:LOW?",     verified: true}
+  func_set:      {cmd: "SOUR{ch}:FUNC {value}",          verified: false, note: "EMEM1 / EMEM2 (edit memory)"}
+  func_q:        {cmd: "SOUR{ch}:FUNC?",                 verified: true}
+  burst_state:   {cmd: "SOUR{ch}:BURS:STAT {value}",     verified: true}
+  burst_state_q: {cmd: "SOUR{ch}:BURS:STAT?",            verified: true}
+  burst_mode:    {cmd: "SOUR{ch}:BURS:MODE {value}",     verified: false, note: "TRIG"}
+  burst_ncyc:    {cmd: "SOUR{ch}:BURS:NCYC {value}",     verified: true}
+  burst_ncyc_q:  {cmd: "SOUR{ch}:BURS:NCYC?",            verified: true}
+  arb_upload:    {cmd: "TRAC:DATA EMEM{ch},",            verified: false, note: "binary block, uint16 big-endian, 0..16383"}
+  arb_points_q:  {cmd: "DATA:POIN? EMEM{ch}",            verified: false}
+# Never used by bench-check: output ON, software trigger
+forbidden: ["OUTP1:STAT ON", "OUTP2:STAT ON", "OUTP1 ON", "OUTP2 ON", "OUTP:STAT ON", "*TRG", "TRIG"]
+arb_max_code: 16383

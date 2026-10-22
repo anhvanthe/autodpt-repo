@@ -12,6 +12,9 @@
   the HAL wrapper, not the GUI. Abort/safe-off paths must pre-empt queued commands.
 * Quality gate before every commit: `ruff check autodpt tests tools`, `python -m mypy autodpt`,
   `python -m pytest -q`.
+* Phase 2a (bench check, transports, command sets, simulators) is done. Command strings live ONLY in
+  `autodpt/hal/commandsets/*.yaml`; after a passing on-bench `bench-check --level control`, set the
+  confirmed commands to `verified: true`.
 * Next: Phase 2 — HAL interfaces (`PowerSupply`, `PulseGenerator`, `Oscilloscope`, `DcLinkMonitor`,
   `DigitalIO`, `TemperatureSource/Controller`), mocks built on `analysis/synth.py`, then real drivers
   with read-only `--identify` smoke scripts.
